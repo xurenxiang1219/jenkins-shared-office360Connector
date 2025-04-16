@@ -16,10 +16,10 @@ def call(Map config = [:]) {
     def gitCommit = config.gitCommit ?: 'unknown'
     def buildTime = config.buildTime ?: '-1'
     def message = config.message ?: "Build for branch ${branch} has ${status == 'Success' ? 'succeeded' : 'failed'}."
-    def message2= "****${project}****\n" +
-                  "**Branch**: ${branch}\n" +
-                  "**GIT MESSAGE**: ${gitCommit}\n" +
-                  "**Build Time**: ${buildTime} sec\n"
+    def message2= "****${project}****\n\n" +
+                  "**Branch**: ${branch}\n\n" +
+                  "**GIT MESSAGE**: ${gitCommit}\n\n" +
+                  "**Build Time**: ${buildTime} sec\n\n"
     // 如果没传 webhookUrl，就自动根据分支取
     def webhook = config.webhookUrl ?: WebhookUtil.getWebhookForBranch(branch)
 
@@ -27,6 +27,6 @@ def call(Map config = [:]) {
         webhookUrl: webhook,
         message: message2,
         status: status,
-        adaptiveCards: true
+        adaptiveCards: true,
     )
 }
