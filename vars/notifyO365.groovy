@@ -1,6 +1,15 @@
 import org.example.utils.WebhookUtil
 
 def call(Map config = [:]) {
+    // 如果未提供 gitCommit，则自动获取最新提交的 commit message
+    if (!config.gitCommit || config.gitCommit == 'unknown') {
+        // 注意：请确保此步骤在有 node 环境下执行
+        config.gitCommit = sh(script: "git log -1 --pretty=%B", returnStdout: true)?.trim()
+    }
+    // 如果未提供 buildTime，则尝试从 currentBuild 中计算（单位秒）
+    if ((config.buildTime == '-1' || !config.buildTime) && currentBuild?.duration) {
+        config.buildTime = currentBuild.duration / 1000
+    }
     def status = config.status ?: 'Success'
     def branch = config.branch ?: 'unknown'
     def project = config.project ?: 'unknown'
