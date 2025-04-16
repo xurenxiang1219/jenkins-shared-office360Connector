@@ -6,10 +6,10 @@ def call(Map config = [:]) {
     def project = env.JOB_NAME ?: 'Unknown'
     def gitCommit = sh(script: "git log -1 --pretty=%B", returnStdout: true)?.trim() ?: 'Unknown'
     def buildTime = currentBuild.duration / 1000 ?: '-1'
-    def message = """****${project}****
-        **Branch**: ${branch}
-        **GIT MESSAGE**: ${gitCommit}
-        **Build Time**: ${buildTime} sec
+    def message = """****${project}****\n\n
+        **Branch**: ${branch}\n\n
+        **GIT MESSAGE**: ${gitCommit}\n\n
+        **Build Time**: ${buildTime} sec\n\n
         """
     def webhook = config.webhookUrl ?: WebhookUtil.getWebhookForBranch(branch)
 
