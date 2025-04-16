@@ -14,7 +14,7 @@ def call(Map config = [:]) {
     office365ConnectorSend(
         webhookUrl: webhook,
         message: message,
-        status: status,
+        status: status=='SUCCESS' ? '✅ SUCCESS' : '🔴 FAILURE',
         adaptiveCards: true,
     )
 }
